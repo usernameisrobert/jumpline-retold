@@ -18,7 +18,7 @@ void UpdateDrawFrame(void) {
 int main(void) {
     BGblack = GetColor(0x0F0F1FFF);
     logo = LoadTexture("assets/jumplineretoldlogo.png");
-    logopos = {50, 50};
+    logopos = (Vector2){ 50.0f, 50.0f };
     InitWindow(800, 450, "Jumpline Retold"); //hey look its title
 
 #ifdef __EMSCRIPTEN__
