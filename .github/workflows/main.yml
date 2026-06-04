@@ -1,0 +1,69 @@
+name: Deploy Raylib Game to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Change this to 'master' if your default branch is master
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Emscripten SDK
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 3.1.64 # Stable Emscripten version
+
+      - name: Install Raylib Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y alsa-utils libasound2-dev libx11-dev libxrandr-dev libxi-dev libxcursor-dev libxinerama-dev libxkbcommon-dev
+
+      - name: Download and Build Raylib for Web
+        run: |
+          git clone https://github.com/raysan5/raylib.git raylib-src
+          cd raylib-src/src
+          make PLATFORM=PLATFORM_WEB EMSDK_PATH=$EMSDK
+          sudo make install PLATFORM=PLATFORM_WEB EMSDK_PATH=$EMSDK
+          cd ../..
+
+      - name: Compile Game to HTML5
+        run: |
+          # Create a deployment directory
+          mkdir build
+          
+          # Compile main.c (adjust source file names if you have more than one)
+          # We link to the web-optimized raylib library we just built
+          emcc -o build/index.html main.c -Wall -std=c99 -D_DEFAULT_SOURCE -Wno-missing-braces \
+          -I/usr/local/include -L/usr/local/lib -lraylib \
+          -s USE_GLFW=3 -s ASYNCIFY -s TOTAL_MEMORY=67108864 \
+          --shell-file raylib-src/src/shell.html
+          
+          # Note: If you have assets (images, audio), add this flag to emcc: --preload-file assets
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './build'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
