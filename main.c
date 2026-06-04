@@ -16,10 +16,10 @@ void UpdateDrawFrame(void) {
 }
 
 int main(void) {
+    InitWindow(800, 450, "Jumpline Retold"); //hey look its title
     BGblack = GetColor(0x0F0F1FFF);
     logo = LoadTexture("assets/jumplineretoldlogo.png");
     logopos = (Vector2){ 50.0f, 50.0f };
-    InitWindow(800, 450, "Jumpline Retold"); //hey look its title
 
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop(UpdateDrawFrame, 60, 1);
