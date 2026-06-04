@@ -9,13 +9,13 @@ Color BGblack;
 void UpdateDrawFrame(void) {
     BeginDrawing();
         ClearBackground(BGblack);
-        DrawText("so stinky", 190, 200, 20, RAYWHITE);
+        DrawText("Jumpline retold title will be here :3", 50, 50, 20, RAYWHITE);
     EndDrawing();
 }
 
 int main(void) {
     BGblack = GetColor(0x0F0F1FFF);
-    InitWindow(800, 450, "so stinky"); //so stinkyy
+    InitWindow(800, 450, "Jumpline Retold"); //hey look its title
 
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop(UpdateDrawFrame, 60, 1);
