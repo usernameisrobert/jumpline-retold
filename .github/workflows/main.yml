@@ -44,17 +44,12 @@ jobs:
 
       - name: Compile Game to HTML5
         run: |
-          # Create a deployment directory
           mkdir build
-          
-          # Compile main.c (adjust source file names if you have more than one)
-          # We link to the web-optimized raylib library we just built
           emcc -o build/index.html main.c -Wall -std=c99 -D_DEFAULT_SOURCE -Wno-missing-braces \
           -I/usr/local/include -L/usr/local/lib -lraylib \
           -s USE_GLFW=3 -s ASYNCIFY -s TOTAL_MEMORY=67108864 \
+          -s TARGETED_FPS=60 \
           --shell-file raylib-src/src/shell.html
-          
-          # Note: If you have assets (images, audio), add this flag to emcc: --preload-file assets
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
