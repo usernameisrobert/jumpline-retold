@@ -30,14 +30,13 @@ jobs:
           cmake -G "Visual Studio 17 2022" -A x64 -DBUILD_EXAMPLES=OFF ..\raylib-src
           cmake --build . --config Release
 
-      - name: Compile Game to Windows EXE
+      - name: Compile Game to Windows EXE (No Console Window)
         shell: cmd
         run: |
           mkdir build
           
-          :: Compile main.c and link against the newly generated static Raylib library
-          :: CMake places the built library inside raylib-build\raylib\Release\
-          cl.exe main.c /I"./raylib-src/src" /Fo:build/ /Fe:build/my_raylib_game.exe /MD /O2 /link /LIBPATH:"./raylib-build/raylib/Release" raylib.lib user32.lib gdi32.lib winmm.lib shell32.lib
+          :: Added /link /subsystem:windows /ENTRY:mainCRTStartup to hide the console window
+          cl.exe main.c /I"./raylib-src/src" /Fo:build/ /Fe:build/my_raylib_game.exe /MD /O2 /link /LIBPATH:"./raylib-build/raylib/Release" raylib.lib user32.lib gdi32.lib winmm.lib shell32.lib /subsystem:windows /ENTRY:mainCRTStartup
 
       - name: Copy Assets to Build Folder
         shell: cmd
