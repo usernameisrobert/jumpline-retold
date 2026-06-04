@@ -11,7 +11,7 @@ Vector2 logopos;
 void UpdateDrawFrame(void) {
     BeginDrawing();
         ClearBackground(BGblack);
-        DrawTextureEx(logo, logopos, 0, 0.4, RAYWHITE);
+        DrawTextureEx(logo, logopos, 0, 1, RAYWHITE);
     EndDrawing();
 }
 
