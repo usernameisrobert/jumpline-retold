@@ -4,7 +4,7 @@
 #include <emscripten.h>
 #endif
 
-Color blackcuzidkcolors = GetColor(0x8A2BE2FF);
+Color blackcuzidkcolors;
 
 void UpdateDrawFrame(void) {
     BeginDrawing();
@@ -14,6 +14,7 @@ void UpdateDrawFrame(void) {
 }
 
 int main(void) {
+    blackcuzidkcolors = GetColor(0x8A2BE2FF);
     InitWindow(800, 450, "so stinky"); //so stinkyy
 
 #ifdef __EMSCRIPTEN__
