@@ -1,0 +1,50 @@
+name: Build Raylib Game for Windows
+
+on:
+  push:
+    branches:
+      - main # Change this to 'master' if your default branch is master
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup MSVC (Visual Studio Compiler)
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Download and Build Raylib for Windows
+        shell: cmd
+        run: |
+          git clone --depth 1 https://github.com/raysan5/raylib.git raylib-src
+          cd raylib-src\src
+          
+          :: Build Raylib using nmake for MSVC
+          nmake -f Makefile.msvc PLATFORM=PLATFORM_DESKTOP
+
+      - name: Compile Game to Windows EXE
+        shell: cmd
+        run: |
+          mkdir build
+          
+          :: Compile your main.c and link it with Raylib
+          :: /I adds the include directory, /link specifies the library directory and files
+          cl.exe main.c /I"./raylib-src/src" /Fo:build/ /Fe:build/my_raylib_game.exe /MD /O2 /link /LIBPATH:"./raylib-src/src" raylib.lib user32.lib gdi32.lib winmm.lib shell32.lib
+
+      - name: Copy Assets to Build Folder
+        shell: cmd
+        run: |
+          :: If you have an assets folder, copy it into the build directory so the .exe can find it
+          if exist assets xcopy /E /I /Y assets build\assets
+
+      - name: Upload Windows Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Raylib-Windows-Build
+          path: build/
