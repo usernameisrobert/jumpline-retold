@@ -45,12 +45,9 @@ jobs:
         run: |
           mkdir build
           
-          # We now point directly to the cloned raylib-src folder for includes (-I) and library (-L)
-          # Note: We link against -lraylib.web instead of -lraylib
           emcc -o build/index.html main.c -Wall -std=c99 -D_DEFAULT_SOURCE -Wno-missing-braces \
           -I./raylib-src/src -L./raylib-src/src -lraylib.web \
           -s USE_GLFW=3 -s ASYNCIFY -s TOTAL_MEMORY=67108864 \
-          -s TARGETED_FPS=60 \
           --shell-file raylib-src/src/shell.html
 
       - name: Setup Pages
