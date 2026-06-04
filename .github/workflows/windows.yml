@@ -3,7 +3,7 @@ name: Build Raylib Game for Windows
 on:
   push:
     branches:
-      - main # Change this to 'master' if your default branch is master
+      - main
 
 permissions:
   contents: read
@@ -19,28 +19,29 @@ jobs:
       - name: Setup MSVC (Visual Studio Compiler)
         uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Download and Build Raylib for Windows
+      - name: Download and Build Raylib via CMake
         shell: cmd
         run: |
           git clone --depth 1 https://github.com/raysan5/raylib.git raylib-src
-          cd raylib-src\src
+          mkdir raylib-build
+          cd raylib-build
           
-          :: Build Raylib using nmake for MSVC
-          nmake -f Makefile.msvc PLATFORM=PLATFORM_DESKTOP
+          :: Configure and build Raylib using CMake with MSVC static runtime
+          cmake -G "Visual Studio 17 2022" -A x64 -DBUILD_EXAMPLES=OFF ..\raylib-src
+          cmake --build . --config Release
 
       - name: Compile Game to Windows EXE
         shell: cmd
         run: |
           mkdir build
           
-          :: Compile your main.c and link it with Raylib
-          :: /I adds the include directory, /link specifies the library directory and files
-          cl.exe main.c /I"./raylib-src/src" /Fo:build/ /Fe:build/my_raylib_game.exe /MD /O2 /link /LIBPATH:"./raylib-src/src" raylib.lib user32.lib gdi32.lib winmm.lib shell32.lib
+          :: Compile main.c and link against the newly generated static Raylib library
+          :: CMake places the built library inside raylib-build\raylib\Release\
+          cl.exe main.c /I"./raylib-src/src" /Fo:build/ /Fe:build/my_raylib_game.exe /MD /O2 /link /LIBPATH:"./raylib-build/raylib/Release" raylib.lib user32.lib gdi32.lib winmm.lib shell32.lib
 
       - name: Copy Assets to Build Folder
         shell: cmd
         run: |
-          :: If you have an assets folder, copy it into the build directory so the .exe can find it
           if exist assets xcopy /E /I /Y assets build\assets
 
       - name: Upload Windows Build Artifact
