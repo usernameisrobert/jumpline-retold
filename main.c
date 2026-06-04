@@ -5,6 +5,8 @@
 #endif
 
 Color BGblack;
+Texture2D logo;
+Vector2 logopos;
 
 void UpdateDrawFrame(void) {
     BeginDrawing();
@@ -15,8 +17,8 @@ void UpdateDrawFrame(void) {
 
 int main(void) {
     BGblack = GetColor(0x0F0F1FFF);
-    Texture2D logo = LoadTexture("assets/jumplineretoldlogo.png");
-    Vector2 logopos = {50, 50};
+    logo = LoadTexture("assets/jumplineretoldlogo.png");
+    logopos = {50, 50};
     InitWindow(800, 450, "Jumpline Retold"); //hey look its title
 
 #ifdef __EMSCRIPTEN__
