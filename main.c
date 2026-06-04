@@ -9,12 +9,13 @@ Color BGblack;
 void UpdateDrawFrame(void) {
     BeginDrawing();
         ClearBackground(BGblack);
-        DrawText("Jumpline retold title will be here :3", 50, 50, 20, RAYWHITE);
+        DrawTextureEx(logo, vec2(50, 50), 0, 1);
     EndDrawing();
 }
 
 int main(void) {
     BGblack = GetColor(0x0F0F1FFF);
+    Texture2D logo = LoadTexture("assets/jumplineretoldlogo.png");
     InitWindow(800, 450, "Jumpline Retold"); //hey look its title
 
 #ifdef __EMSCRIPTEN__
