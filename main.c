@@ -12,7 +12,7 @@ void UpdateDrawFrame(void) {
 }
 
 int main(void) {
-    InitWindow(800, 450, "so stinky"); //so stinky
+    InitWindow(800, 450, "so stinky"); //so stinkyy
 
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop(UpdateDrawFrame, 60, 1);
