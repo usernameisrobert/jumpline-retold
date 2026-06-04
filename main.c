@@ -4,10 +4,12 @@
 #include <emscripten.h>
 #endif
 
+Color blackcuzidkcolors = GetColor(0x8A2BE2FF);
+
 void UpdateDrawFrame(void) {
     BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawText("so stinky", 190, 200, 20, LIGHTGRAY);
+        ClearBackground(blackcuzidkcolors);
+        DrawText("so stinky", 190, 200, 20, RAYWHITE);
     EndDrawing();
 }
 
