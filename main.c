@@ -8,7 +8,7 @@ Color BGblack;
 
 void UpdateDrawFrame(void) {
     BeginDrawing();
-        ClearBackground(blackcuzidkcolors);
+        ClearBackground(BGblack);
         DrawText("so stinky", 190, 200, 20, RAYWHITE);
     EndDrawing();
 }
