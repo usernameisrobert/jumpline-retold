@@ -8,14 +8,14 @@ Color BGblack;
 Texture2D logo;
 Vector2 logopos;
 
-void UpdateDrawFrame(void) {
+void UpdateDrawFrame() {
     BeginDrawing();
         ClearBackground(BGblack);
         DrawTextureEx(logo, logopos, 0, 1, RAYWHITE);
     EndDrawing();
 }
 
-int main(void) {
+int main() {
     InitWindow(800, 450, "Jumpline Retold"); //hey look its title
     BGblack = GetColor(0x0F0F1FFF);
     logo = LoadTexture("assets/jumplineretoldsmall.png");
