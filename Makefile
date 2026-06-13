@@ -26,7 +26,7 @@ SRCS     := $(wildcard $(SRC_DIR)/*.c)
 OBJS     := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
 DEPS     := $(OBJS:.o=.d)
 
-.PHONY: all clean
+.PHONY: all clean run
 
 all: $(TARGET)
 
@@ -43,3 +43,7 @@ $(TARGET): $(OBJS)
 
 clean:
 	rm -rf $(BUILD_DIR)
+
+run: $(TARGET)
+	./$(TARGET)
+
