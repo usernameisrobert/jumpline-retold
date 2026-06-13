@@ -46,7 +46,7 @@ jobs:
           
           # Added '--preload-file assets' to include your game's resources.
           # If your assets are in a different folder, change 'assets' to your folder name.
-          emcc -o build/index.html main.c -Wall -std=c23 -D_DEFAULT_SOURCE -Wno-missing-braces \
+          emcc -o build/index.html src/main.c -Wall -std=c23 -D_DEFAULT_SOURCE -Wno-missing-braces \
             -I./raylib-src/src -L./raylib-src/src -lraylib.web \
             -s USE_GLFW=3 -s ASYNCIFY -s TOTAL_MEMORY=67108864 \
             --shell-file minshell.html \
