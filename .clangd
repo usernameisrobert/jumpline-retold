@@ -1,4 +1,9 @@
-# .clangd
 CompileFlags:
-  Add: [-std=c23]
-  Compiler: gcc  # Forces clangd to look for your local GCC/G++ version headers
+  Add: [-std=c23, -Wall, -Wextra]
+
+---
+# 2. Specific override block for header files
+If:
+  PathMatch: [.*\.h]
+CompileFlags:
+  Add: [-x, c-header]  # Forces clangd to drop Objective-C++ and parse as
