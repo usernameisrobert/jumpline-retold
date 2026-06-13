@@ -1,0 +1,4 @@
+# .clangd
+CompileFlags:
+  Add: [-std=c23]
+  Compiler: gcc  # Forces clangd to look for your local GCC/G++ version headers
