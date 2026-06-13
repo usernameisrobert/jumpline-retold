@@ -35,8 +35,9 @@ jobs:
         run: |
           mkdir build
           
+          :: Added /std:c23 to enforce C23 standard
           :: Added /link /subsystem:windows /ENTRY:mainCRTStartup to hide the console window
-          cl.exe main.c /I"./raylib-src/src" /Fo:build/ /Fe:build/my_raylib_game.exe /MD /O2 /link /LIBPATH:"./raylib-build/raylib/Release" raylib.lib user32.lib gdi32.lib winmm.lib shell32.lib /subsystem:windows /ENTRY:mainCRTStartup
+          cl.exe /std:c23 main.c /I"./raylib-src/src" /Fo:build/ /Fe:build/my_raylib_game.exe /MD /O2 /link /LIBPATH:"./raylib-build/raylib/Release" raylib.lib user32.lib gdi32.lib winmm.lib shell32.lib /subsystem:windows /ENTRY:mainCRTStartup
 
       - name: Copy Assets to Build Folder
         shell: cmd
