@@ -34,13 +34,13 @@ void UpdateFunction(float dt, Scene* scene) {
         scene->player.vel.y = 0;
         isgrounded = true;
     }
-    if (IsKeyPressed(KEY_SPACE) && isgrounded) {
+    if (( IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP) ) && isgrounded) {
         scene->player.vel.y = -jump_speed;
     }
-    if (IsKeyDown(KEY_A)) {
+    if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
         scene->player.vel.x -= move_speed;
     }
-    if (IsKeyDown(KEY_D)) {
+    if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
         scene->player.vel.x += move_speed;
     }
 
