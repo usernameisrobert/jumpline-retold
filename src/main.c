@@ -19,8 +19,12 @@ void RenderDrawEmScripten() {
     Renderer_Draw(&mainsc);
 }
 
+void UpdateFunction(float dt, Scene* scene) {
+    // TODO: robort add player movment or what not you fucking retarted idiot i don't wanna do it
+}
+
 int main() {
-    WindowInfo window = CreateWindow(WIDTH, HEIGHT, "Jumpline retold");
+    CreateWindow(WIDTH, HEIGHT, "Jumpline retold");
 
     mainsc = (Scene){
         .player = {
@@ -32,6 +36,7 @@ int main() {
     };
 
     LoadScene(&mainsc);
+    RegisterUpdate(&UpdateFunction);
 
     StartGameLoop();
     EndGameLoop();

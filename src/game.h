@@ -8,5 +8,8 @@ typedef struct window_info {
 void StartGameLoop(); // init
 void EndGameLoop(); // deinit
 
+typedef void (*UpdateFunc)(float dt, Scene* loaded_scene);
+void RegisterUpdate(UpdateFunc func);
+
 void LoadScene(Scene* scene);
 WindowInfo CreateWindow(int width, int height, const char* title);
