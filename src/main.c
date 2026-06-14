@@ -27,7 +27,7 @@ void UpdateFunction(float dt, Scene* scene) { // there, lazy dev, i did it, you 
         scene->player.vel.y = 0;
     }
     if (IsKeyDown(KEY_SPACE)) {
-        scene->player.vel.y = -1000;
+        scene->player.vel.y = -500;
     }
 }
 
