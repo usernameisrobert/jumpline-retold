@@ -6,12 +6,20 @@ MODE ?= debug
 SRC_DIR   := src
 BUILD_DIR := build
 
+DEPFLAGS := -MMD -MP
+CFLAGS := -Wall -Wextra -g 
+
+# Files/Targets
+SRCS     := $(wildcard $(SRC_DIR)/*.c)
+OBJS     := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
+DEPS     := $(OBJS:.o=.d)
+
 # Platform Configuration
 ifeq ($(PLATFORM),PLATFORM_WEB)
     # Web / Emscripten Configuration
     CC     := emcc
     # Fallback to -std=c2x because the runner's GCC/Emscripten lacks full C23 support
-    CFLAGS := -Wall -Wextra -std=c2x -g -D_DEFAULT_SOURCE
+    CFLAGS += -std=c2x -D_DEFAULT_SOURCE
     
     # Emscripten specific flags (Includes Raylib source paths from GitHub Action)
     RAYLIB_SRC_PATH ?= ./raylib-src
@@ -25,12 +33,11 @@ ifeq ($(PLATFORM),PLATFORM_WEB)
 else
     # Native Desktop Configuration (Your original setup)
     CC     := gcc
-    CFLAGS := -Wall -Wextra -std=c23 -g
+    CFLAGS == -std=c23
     LDLIBS := -lraylib -lGL -lm -lpthread -ldl
     TARGET := $(BUILD_DIR)/jumplinert
 endif
 
-DEPFLAGS := -MMD -MP
 
 # Mode Configuration
 ifeq ($(MODE),release)
@@ -41,10 +48,6 @@ else
     $(error Unknown MODE: $(MODE). Choose 'debug' or 'release')
 endif
 
-# Files/Targets
-SRCS     := $(wildcard $(SRC_DIR)/*.c)
-OBJS     := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
-DEPS     := $(OBJS:.o=.d)
 
 .PHONY: all clean run
 
@@ -65,6 +68,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 run: $(TARGET)
+
 ifeq ($(PLATFORM),PLATFORM_WEB)
 	@echo "Cannot run web build directly. Host the $(BUILD_DIR) directory on a local server."
 else
