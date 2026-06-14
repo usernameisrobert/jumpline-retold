@@ -19,9 +19,16 @@ void RenderDrawEmScripten() {
     Renderer_Draw(&mainsc);
 }
 
-void UpdateFunction(float dt, Scene* scene) {
-    scene->player.vel.y += 20 * dt;
+void UpdateFunction(float dt, Scene* scene) { // there, lazy dev, i did it, you mean-head
+    scene->player.vel.y += 60 * dt;
     scene->player.pos.y += scene->player.vel.y * dt;
+    if (scene->player.pos.y > 400) { // ground
+        scene->player.pos.y = 400;
+        scene->player.vel.y = 0;
+    }
+    if (IsKeyDown(KEY_SPACE)) {
+        scene->player.vel.y = 100;
+    }
 }
 
 int main() {
