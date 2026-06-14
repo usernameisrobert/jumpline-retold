@@ -20,8 +20,8 @@ void RenderDrawEmScripten() {
 }
 
 void UpdateFunction(float dt, Scene* scene) {
-    scene->player.pos.y += 20 * dt;
-    // TODO: robort add player movment or what not you fucking retarted idiot i don't wanna do it
+    scene->player.vel.y += 20 * dt;
+    scene->player.pos.y += scene->player.vel.y * dt;
 }
 
 int main() {
