@@ -40,17 +40,13 @@ jobs:
           cd raylib-src/src
           make PLATFORM=PLATFORM_WEB EMSDK_PATH=$EMSDK
 
-      - name: Compile Game to HTML5
+      - name: Compile Game using Makefile
         run: |
-          mkdir build
-          
-          # Added '--preload-file assets' to include your game's resources.
-          # If your assets are in a different folder, change 'assets' to your folder name.
-          emcc -o build/index.html src/main.c -Wall -std=c23 -D_DEFAULT_SOURCE -Wno-missing-braces \
-            -I./raylib-src/src -L./raylib-src/src -lraylib.web \
-            -s USE_GLFW=3 -s ASYNCIFY -s TOTAL_MEMORY=67108864 \
-            --shell-file minshell.html \
-            --preload-file assets
+          mkdir -p build
+          # We pass PLATFORM=PLATFORM_WEB and the EMSDK path to your Makefile.
+          # If your Makefile requires specific flags or a specific target (e.g., 'make web'), 
+          # you can adjust this command (e.g., 'make PLATFORM=PLATFORM_WEB web').
+          make PLATFORM=PLATFORM_WEB RAYLIB_SRC_PATH=./raylib-src
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -58,7 +54,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './build'
+          path: './build' # Make sure your Makefile outputs index.html, index.js, and index.wasm here
 
       - name: Deploy to GitHub Pages
         id: deployment
