@@ -9,6 +9,7 @@
 #endif
 
 static Scene* current_loaded_scene = nullptr;
+static UpdateFunc update_function = nullptr;
 
 WindowInfo CreateWindow(int width, int height, const char* title) {
     InitWindow(width, height, title);
@@ -22,7 +23,15 @@ void LoadScene(Scene* scene) {
 }
 
 void GameLoop() {
+    float dt = GetFrameTime();
+    if (update_function) {
+        update_function(dt, current_loaded_scene);
+    }
     Renderer_Draw(current_loaded_scene);
+}
+
+void RegisterUpdate(UpdateFunc func) {
+    update_function = func;
 }
 
 void StartGameLoop() {
