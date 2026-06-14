@@ -33,7 +33,7 @@ ifeq ($(PLATFORM),PLATFORM_WEB)
 else
     # Native Desktop Configuration (Your original setup)
     CC     := gcc
-    CFLAGS == -std=c23
+    CFLAGS := -std=c23
     LDLIBS := -lraylib -lGL -lm -lpthread -ldl
     TARGET := $(BUILD_DIR)/jumplinert
 endif

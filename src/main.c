@@ -19,14 +19,16 @@ void RenderDrawEmScripten() {
     Renderer_Draw(&mainsc);
 }
 
-void UpdateFunction(float dt, Scene* scene) { // there, lazy dev, i did it, you mean-head
-    scene->player.vel.y += 2000 * dt;
+void UpdateFunction(float dt, Scene* scene) { 
+    const float gravity = 2000;
+
+    scene->player.vel.y += gravity * dt; // good job on the gravity fomurar with is vel += gravity * dt^2 or
     scene->player.vel.x = scene->player.vel.x * 0.8;
-    scene->player.pos.y += scene->player.vel.y * dt;
-    scene->player.pos.x += scene->player.vel.x * dt;
     bool isgrounded = false;
-    if (scene->player.pos.y > 400) { // ground
-        scene->player.pos.y = 400;
+
+    const float groundy = HEIGHT - scene->player.scale.y; // no hardcoding ground
+    if (scene->player.pos.y > groundy) { // ground
+        scene->player.pos.y = groundy;
         scene->player.vel.y = 0;
         isgrounded = true;
     }
@@ -39,6 +41,9 @@ void UpdateFunction(float dt, Scene* scene) { // there, lazy dev, i did it, you 
     if (IsKeyDown(KEY_D)) {
         scene->player.vel.x += 100;
     }
+
+    scene->player.pos.y += scene->player.vel.y * dt;
+    scene->player.pos.x += scene->player.vel.x * dt;
 }
 
 int main() {
