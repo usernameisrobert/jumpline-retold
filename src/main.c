@@ -24,20 +24,20 @@ void UpdateFunction(float dt, Scene* scene) { // there, lazy dev, i did it, you 
     scene->player.vel.x *= 0.8 * dt;
     scene->player.pos.y += scene->player.vel.y * dt;
     scene->player.pos.x += scene->player.vel.x * dt;
-    bool isgrounded = false
+    bool isgrounded = false;
     if (scene->player.pos.y > 400) { // ground
         scene->player.pos.y = 400;
         scene->player.vel.y = 0;
-        isgrounded = true
+        isgrounded = true;
     }
     if (IsKeyPressed(KEY_SPACE) && isgrounded) {
         scene->player.vel.y = -500;
     }
     if (IsKeyDown(KEY_A)) {
-        scene->player.vel.x -= 10
+        scene->player.vel.x -= 10;
     }
     if (IsKeyDown(KEY_D)) {
-        scene->player.vel.x += 10
+        scene->player.vel.x += 10;
     }
 }
 
