@@ -4,6 +4,7 @@
 typedef struct player {
     Vector2 pos;
     Vector2 scale;
+    Vector2 vel;
     Color color;
 } Player;
 
