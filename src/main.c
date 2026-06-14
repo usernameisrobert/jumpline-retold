@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "renderer.h"
+#include "game.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -19,8 +20,7 @@ void RenderDrawEmScripten() {
 }
 
 int main() {
-    InitWindow(WIDTH, HEIGHT, "Jumpline Retold"); //hey look its title
-    BGblack = GetColor(0x0F0F1FFF);
+    WindowInfo window = CreateWindow(WIDTH, HEIGHT, "Jumpline retold");
 
     mainsc = (Scene){
         .player = {
@@ -31,16 +31,9 @@ int main() {
         .bg_color = GetColor(0x0F0F1FFF)
     };
 
-    SetTargetFPS(60);
-    #ifdef __EMSCRIPTEN__
-        emscripten_set_main_loop(RenderDrawEmScripten, 60, 1);
-    #else
-        SetTargetFPS(60);
-        while (!WindowShouldClose()) {
-            Renderer_Draw(&mainsc);
-        }
-    #endif
+    LoadScene(&mainsc);
 
-    CloseWindow();
+    StartGameLoop();
+    EndGameLoop();
     return 0;
 }
