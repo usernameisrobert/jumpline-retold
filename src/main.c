@@ -1,4 +1,6 @@
 #include "raylib.h"
+#include "renderer.h"
+#include "game.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -11,29 +13,27 @@ Color BGblack;
 Texture2D logo;
 Vector2 logopos;
 
-void UpdateDrawFrame() {
-    BeginDrawing();
-        ClearBackground(BGblack);
-        DrawTextureEx(logo, logopos, 0, 1, RAYWHITE);
-    EndDrawing();
+Scene mainsc;
+
+void RenderDrawEmScripten() {
+    Renderer_Draw(&mainsc);
 }
 
 int main() {
-    InitWindow(WIDTH, HEIGHT, "Jumpline Retold"); //hey look its title
-    BGblack = GetColor(0x0F0F1FFF);
-    logo = LoadTexture("assets/jumplineretoldsmall.png");
-    SetTextureFilter(logo, TEXTURE_FILTER_BILINEAR);
-    logopos = (Vector2){ (WIDTH / 2.0f) - logo.width / 2.0, HEIGHT / 2.0f - logo.height / 2.0};
+    WindowInfo window = CreateWindow(WIDTH, HEIGHT, "Jumpline retold");
 
-#ifdef __EMSCRIPTEN__
-    emscripten_set_main_loop(UpdateDrawFrame, 60, 1);
-#else
-    SetTargetFPS(60);
-    while (!WindowShouldClose()) {
-        UpdateDrawFrame();
-    }
-#endif
+    mainsc = (Scene){
+        .player = {
+            .pos = { 0, 0},
+            .scale = { 50, 50 },
+            .color = RED,
+        },
+        .bg_color = GetColor(0x0F0F1FFF)
+    };
 
-    CloseWindow();
+    LoadScene(&mainsc);
+
+    StartGameLoop();
+    EndGameLoop();
     return 0;
 }
