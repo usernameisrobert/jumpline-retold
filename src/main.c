@@ -21,7 +21,7 @@ void RenderDrawEmScripten() {
 
 void UpdateFunction(float dt, Scene* scene) { // there, lazy dev, i did it, you mean-head
     scene->player.vel.y += 600 * dt;
-    scene->player.vel.x *= 0.8 * dt;
+    scene->player.vel.x = scene->player.vel.x * 0.8 * dt;
     scene->player.pos.y += scene->player.vel.y * dt;
     scene->player.pos.x += scene->player.vel.x * dt;
     bool isgrounded = false;
