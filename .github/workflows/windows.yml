@@ -3,10 +3,10 @@ name: Build Raylib Game for Windows
 on:
   push:
     branches:
-      - main
+      - main # Change this to 'master' if your default branch is master
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-windows:
@@ -16,36 +16,33 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup MSVC (Visual Studio Compiler)
-        uses: ilammy/msvc-dev-cmd@v1
+      - name: Setup MinGW (GCC)
+        uses: egor-tisin/setup-gcc@v1
+        with:
+          version: '12.2.0' # Stable GCC version for Windows compilation
 
-      - name: Download and Build Raylib via CMake
+      - name: Download and Build Raylib for Windows
         shell: cmd
         run: |
           git clone --depth 1 https://github.com/raysan5/raylib.git raylib-src
-          mkdir raylib-build
-          cd raylib-build
-          
-          :: Configure and build Raylib using CMake with MSVC static runtime
-          cmake -G "Visual Studio 17 2022" -A x64 -DBUILD_EXAMPLES=OFF ..\raylib-src
-          cmake --build . --config Release
+          cd raylib-src\src
+          :: Build raylib using mingw32-make
+          mingw32-make PLATFORM=PLATFORM_DESKTOP
 
-      - name: Compile Game to Windows EXE (No Console Window)
+      - name: Compile Game using Makefile
         shell: cmd
         run: |
           mkdir build
+          :: Adjust this command to match how your specific Makefile compiles on Windows.
+          :: We pass the path where we just compiled the desktop version of Raylib.
+          mingw32-make PLATFORM=PLATFORM_DESKTOP RAYLIB_SRC_PATH=.\raylib-src
           
-          :: Added /std:c23 to enforce C23 standard
-          :: Added /link /subsystem:windows /ENTRY:mainCRTStartup to hide the console window
-          cl.exe /std:c23 main.c /I"./raylib-src/src" /Fo:build/ /Fe:build/my_raylib_game.exe /MD /O2 /link /LIBPATH:"./raylib-build/raylib/Release" raylib.lib user32.lib gdi32.lib winmm.lib shell32.lib /subsystem:windows /ENTRY:mainCRTStartup
-
-      - name: Copy Assets to Build Folder
-        shell: cmd
-        run: |
-          if exist assets xcopy /E /I /Y assets build\assets
+          :: If your Makefile doesn't automatically move the final .exe to \build, 
+          :: uncomment and adjust the line below:
+          :: move your_game.exe build\
 
       - name: Upload Windows Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Raylib-Windows-Build
+          name: raylib-game-windows
           path: build/
